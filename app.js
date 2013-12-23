@@ -32,10 +32,11 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
+//app.get('/', routes.index);
 app.get('/user', user.list);
-app.get('/form', function(req, res) {
-	fs.readFile('./form.html', function(error, content) {
+app.get('/', function(req, res) {
+	
+	fs.readFile('./views/index.html', function(error, content) {
 		if (error) {
 			res.writeHead(500);
 			res.end();
@@ -45,6 +46,17 @@ app.get('/form', function(req, res) {
 			res.end(content, 'utf-8');
 		}
 	});
+});
+
+app.get('/api', function(req, res){
+  
+	var ficheInfo = [
+		{ id:1, nom:"Paulinho", prenom:"Moska" },
+		{ id:2, nom:"Maria", prenom:"Gadú" },
+		{ id:3, nom:"Cássia", prenom:"Eller" }
+	];
+	console.log('ficheInfo: ' + ficheInfo);	
+	res.json(ficheInfo);
 });
 
 app.post('/predict', function(req, res){

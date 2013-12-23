@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+ <head>
+  <meta Charest="UTF-8">
+  <title>Teste AngularJS/NodeJS</title>
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+  <script src="javascripts/angular.min.js"></script>
+  <script src="javascripts/index.js"></script>
+ </head>
+ 
+ <body ng-app ng-controller="monControl">
+  <h3>Listagem dos Cantores</h3>
+  <div ng-repeat="a in artistas">
+   <p>{{a.id}}. {{a.nom}} {{a.prenom}}</p>
+  </div>
+ </body>
+</html>
