@@ -6,9 +6,18 @@
   <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
   <script src="javascripts/angular.min.js"></script>
   <script src="javascripts/index.js"></script>
+   
+  <script src="javascripts/Chart.js"></script>
+  <script src="javascripts/angles.js"></script>
+  
+  <meta name = "viewport" content = "initial-scale = 1, user-scalable = no">
+  <style>
+	canvas{
+	}
+  </style>
  </head>
  
- <body ng-app ng-controller="control">	
+ <body ng-app = "MyApp" ng-controller="control">	
 	<div>
 		<form ng-submit="submit()" >
 			<span>Data:</span>
@@ -18,33 +27,46 @@
 			<input type="submit" id="submit" value="Submit" />
 		</form>
 	</div>
-	<div>
-		<div id="tab_in" float=left >
-			<table>
-				<caption>imput Data:</caption>
-				<tr>
-					<th>X</th>
-					<th>Y</th>
-				</tr>
-				<tr ng-repeat="a in imputPoints">		
-					<td>{{a.x}}</td>
-					<td>{{a.y}}</td>
-				</tr>
-			</table>
+	<div ng-show="isVisible">
+		<div>
+			<div id="tab_in" float=left >
+				<table>
+					<caption>imput Data:</caption>
+					<tr>
+						<th>X</th>
+						<th>Y</th>
+					</tr>
+					<tr ng-repeat="a in imputPoints">		
+						<td>{{a.x}}</td>
+						<td>{{a.y}}</td>
+					</tr>
+				</table>
+			</div>
+			<div id="tab_out" float=rigth>
+				<table>
+					<caption>Output Data:</caption>
+					<tr>
+						<th>X</th>
+						<th>Y</th>
+					</tr>
+					
+					<tr ng-repeat="b in outputPoints">
+						<td>{{b.x}}</td>
+						<td>{{b.y}}</td>
+					</tr>		
+				</table>
+			</div>
 		</div>
-		<div id="tab_out" float=rigth>
-			<table>
-				<caption>Output Data:</caption>
-				<tr>
-					<th>X</th>
-					<th>Y</th>
-				</tr>
-				
-				<tr ng-repeat="b in outputPoints">
-					<td>{{b.x}}</td>
-					<td>{{b.y}}</td>
-				</tr>		
-			</table>
+		
+		<div>
+			Imput Data:<br>
+			<canvas chart type="Line" options="myChartOptions" data="chartDataIn" width="300" height="300"></canvas>
+		</div>
+		<div>
+			Output Data:<br>
+			<canvas chart type="Line" options="myChartOptions" data="chartDataOut" width="300" height="300"></canvas>
+		</div>
+		<div>
 		</div>
 	</div>
  </body>
