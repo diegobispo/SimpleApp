@@ -6,6 +6,26 @@ var ID_DATA2 = 1;
 var ID_DATA3 = 2;
 var ID_DATA4 = 3;
 
+function getImputData(){
+
+	var inputdata = [{
+		'label': 'Data 1',
+		'value': ID_DATA1
+		}, {
+		'label': 'Data 2',
+		'value': ID_DATA2
+		}, {
+		'label': 'data3',
+		'value': ID_DATA3
+		},{
+		'label': 'data4',
+		'value': ID_DATA4
+		}
+	];
+	
+	return inputdata;
+};
+
 var MyApp = angular.module('MyApp', [ 'angles' ])
 
 MyApp.controller('control',['$scope', '$http', function ($scope, $http){
@@ -22,8 +42,8 @@ MyApp.controller('control',['$scope', '$http', function ($scope, $http){
 			var y = data.y;			
 			$scope.imputPoints= getPoints(x, y);
 						
-			var xPred = getFakePredictions(x,$http);
-			var yPred = getFakePredictions(y,$http);			
+			var xPred = getFakePredictions(x);
+			var yPred = getFakePredictions(y);			
 			$scope.outputPoints= getPoints(xPred, yPred);
 						
 			/*$http.get('/predict/:imputPoints/algorithm/:algorithmId', imputPoints,algorithmId).success(function(predict){  
@@ -179,26 +199,7 @@ function getData(dataId) {
 };
 
 
-function getFakePredictions(values, $http) {
-
-	var ret;
-	
-	var imputPoints = {"x":[1,2,3,4,5], "y":[1,2,3,4,5]};
-	var algorithmId = 2;
-	
-	$http.get('/predict/' + imputPoints +'/algorithm/' + algorithmId);
-	
-	/*$http.get('/predict/:imputPoints/algorithm/:algorithmId', imputPoints,algorithmId).success(function(predict){  
-		ret = predict;
-	});*/
-	return ret;
-}
-function getFakePredictionsB(values, $http) {
-
-
-	//app.post('/predict/:dataID/algorithm/:algorithmId', function(req, res)
-
-
+function getFakePredictions(values) {
 
 	var length = values.length;
 	var list = [];
@@ -236,24 +237,4 @@ function getPoints(listX, listY) {
 	}
 	
 	return  list;
-};
-
-function getImputData(){
-
-	var inputdata = [{
-		'label': 'Data 1',
-		'value': ID_DATA1
-		}, {
-		'label': 'Data 2',
-		'value': ID_DATA2
-		}, {
-		'label': 'data3',
-		'value': ID_DATA3
-		},{
-		'label': 'data4',
-		'value': ID_DATA4
-		}
-	];
-	
-	return inputdata;
 };

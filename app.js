@@ -49,8 +49,11 @@ app.get('/', function(req, res) {
 });
 
 app.get('/predict/:imputPoints/algorithm/:algorithmId', function(req, res){
-	console.log('get(/predict/:imputPoints/algorithm/:algorithmId');
+	console.log('**** Get Predcit *********');
+	
 	var algorithmId = req.params.algorithmId;
+	console.log("algorithmId: " +algorithmId);
+	console.log("imputPoints: " +imputPoints);
 	
 	//{"x":[1,2,3,4,5], "y":[4,5,6,7,8]};
 	
