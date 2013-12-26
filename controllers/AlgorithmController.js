@@ -8,7 +8,6 @@ module.exports.predict = predict;
 
 // predict values
 function predict(algorithmId, values, callback) {
-	
 	var err;
 	var ret = 0;
 	
@@ -16,21 +15,19 @@ function predict(algorithmId, values, callback) {
 	var isValidated = true; // valvalidate(values); 
 	if( isValidated )
 	{
-	
 		switch (algorithmId) {
-			case 0:
+			case "0":				
 				ret = algorithm1.predict(values);
 				break
-			case 1:
+			case "1":
 				ret = algorithm2.predict(values);
 				break
-			case 2:
+			case "2":
 				ret = algorithm3.predict(values);
 				break
 			default:
 				err = "algorithm not found";
-		}
-	
+		}	
 	}
 	else{
 		err = "invalid data";

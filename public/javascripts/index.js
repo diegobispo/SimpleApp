@@ -6,7 +6,7 @@ var ID_DATA2 = 1;
 var ID_DATA3 = 2;
 var ID_DATA4 = 3;
 
-var MyApp = angular.module('MyApp', [ 'angles' ])
+var MyApp = angular.module('MyApp', [ 'angles' ]);
 
 MyApp.controller('control',['$scope', '$http', function ($scope, $http){
 	$scope.imputDataItens = getImputData();
@@ -14,55 +14,18 @@ MyApp.controller('control',['$scope', '$http', function ($scope, $http){
 	$scope.submit = function() {
 		if (this.text) {
 			$scope.isVisible = true;
-			
+			console.log("imputData: " + $scope.imputData);
 			var data = getData(this.imputData);
 			algorithmId = this.text;
+			console.log("data: " + data);
 			
 			var x = data.x;
-			var y = data.y;			
+			var y = data.y;
+			console.log("x: " + x);
+			console.log("y: " + x);
 			$scope.imputPoints= getPoints(x, y);
-						
-			var xPred = getFakePredictions(x,$http);
-			var yPred = getFakePredictions(y,$http);			
-			$scope.outputPoints= getPoints(xPred, yPred);
-						
-			/*$http.get('/predict/:imputPoints/algorithm/:algorithmId', imputPoints,algorithmId).success(function(predict){  
-				$scope.outputPoints= predict;
-			});*/
 			
-			//app.post('/predict/:dataID/algorithm/:algorithmId', function(req, res)
-						
-			 $scope.chartDataIn = {
-			    labels :  x,
-			    datasets : [
-				{
-				    fillColor : "rgba(151,187,205,0)",
-				    strokeColor : "#e67e22",
-				    pointColor : "rgba(151,187,205,0)",
-				    pointStrokeColor : "#e67e22",
-				    data : y
-				}				
-			    ] 
-			};
-			
-			$scope.chartDataOut = {
-			    labels :  xPred,
-			    datasets : [
-				{
-				    fillColor : "rgba(151,187,205,0)",
-				    strokeColor : "#e67e22",
-				    pointColor : "rgba(151,187,205,0)",
-				    pointStrokeColor : "#e67e22",
-				    data : yPred
-				}				
-			    ]
-			};
-
-
-
-		    $scope.myChartOptions =  getChartOptions();
-		    
-			
+			postPrediction(data, algorithmId, $http, $scope);
 		}
 	};
 }])
@@ -179,49 +142,81 @@ function getData(dataId) {
 };
 
 
-function getFakePredictions(values, $http) {
-
+function postPrediction(values, algorithmId, $http, $scope) {
 	var ret;
-	
-	var imputPoints = {"x":[1,2,3,4,5], "y":[1,2,3,4,5]};
+	var imputPoints = {"x":[1,2,3,4,5], "y":[4,4,3,6,7]};
 	var algorithmId = 2;
 	
-	$http.get('/predict/' + imputPoints +'/algorithm/' + algorithmId);
+	var data = {"imputPoints":imputPoints, "algorithmId":algorithmId};
+	
+	var fora;
+	$http.post('/predict/', data).success(function(id){ 
+		
+		getPredictionById (id, $http, $scope);
+	});
+}
+
+function getPredictionById (predictionId, $http, $scope) {
+	var url = '/predict/' + predictionId.replace(/"/g, "");	
+	console.log("url: " +url);
+	
+		$http.get(url).success(function(prediction){ 		
+		console.log("**** prediction: "+prediction);
+		print(prediction, $http, $scope);
+		
+	});
+}
+
+function print(prediction, $http, $scope)
+{
+	//var prediction = getPredictionById($http.idPredict, $http);
+	
+	var x = prediction.xIn;
+	var y = prediction.yIn;
+
+	var xPred = prediction.xOut;
+	var yPred = prediction.yOut;
+		
+	$scope.outputPoints= getPoints(xPred, yPred);
 	
 	/*$http.get('/predict/:imputPoints/algorithm/:algorithmId', imputPoints,algorithmId).success(function(predict){  
-		ret = predict;
+		$scope.outputPoints= predict;
 	});*/
-	return ret;
-}
-function getFakePredictionsB(values, $http) {
-
-
+	
 	//app.post('/predict/:dataID/algorithm/:algorithmId', function(req, res)
-
-
-
-	var length = values.length;
-	var list = [];
+				
+	 $scope.chartDataIn = {
+	    labels :  x,
+	    datasets : [
+		{
+		    fillColor : "rgba(151,187,205,0)",
+		    strokeColor : "#e67e22",
+		    pointColor : "rgba(151,187,205,0)",
+		    pointStrokeColor : "#e67e22",
+		    data : y
+		}				
+	    ] 
+	};
 	
-	for (var i=0; i < length; i++)
-	{
-		list.push(values[i]);
-	}
-		
-	for (var i=0; i < 20; i++)
-	{
-		var randomIndex = Math.floor(Math.random()* (length-1));
-		var randomNumber = Math.floor(Math.random()* (length-1));		
-		var value = values[randomIndex] + randomNumber;
-		
-		list.push(value);
-	}
-	
-	return  list;
-};
+	$scope.chartDataOut = {
+	    labels :  xPred,
+	    datasets : [
+		{
+		    fillColor : "rgba(151,187,205,0)",
+		    strokeColor : "#e67e22",
+		    pointColor : "rgba(151,187,205,0)",
+		    pointStrokeColor : "#e67e22",
+		    data : yPred
+		}				
+	    ]
+	};
+    $scope.myChartOptions =  getChartOptions();
+}
 
 function getPoints(listX, listY) {
-
+	console.log("listX: " + listX);
+	console.log("listY: " + listY);
+	
 	var length = listX.length;
 	
 	var list = [];
@@ -254,6 +249,5 @@ function getImputData(){
 		'value': ID_DATA4
 		}
 	];
-	
 	return inputdata;
 };

@@ -48,35 +48,43 @@ app.get('/', function(req, res) {
 	});
 });
 
-app.get('/predict/:imputPoints/algorithm/:algorithmId', function(req, res){
+app.get('/predict/:id', function(req, res) {
+	var predictId = req.params.id;
+	DataModel.findById(predictId, function(err, data){
+		if (err) throw err;
+
+		res.json(data);
+	});
+});
+
+app.post('/predict/' , function(req, res){
 	console.log('**** Get Predcit *********');
 	
-	var algorithmId = req.params.algorithmId;
-	console.log("algorithmId: " +algorithmId);
-	console.log("imputPoints: " +imputPoints);
+	var algorithmId = req.body.algorithmId;
+	var imputPoints = req.body.imputPoints;
+
+	//console.log(req);
+	
+	//console.log("***** algorithmId: " +algorithmId);
 	
 	//{"x":[1,2,3,4,5], "y":[4,5,6,7,8]};
 	
-	var xIn = req.params.imputPoints.x;
-	var yIn = req.params.imputPoints.y;
-	console.log('x: '+ xIn);
-	console.log('y: '+ yIn);
+	var xIn = imputPoints.x;
+	var yIn = imputPoints.y;
 	
-	var xOut = AlgorithmController.predict(algorithmId, xIn);//TODO - implementar esta funcao na classe AlgoritimController
+	//console.log("**** xIn: " +xIn);
+	//console.log("**** yIn: " +yIn);
+	
+	var xOut = AlgorithmController.predict(algorithmId, xIn);
 	var yOut = AlgorithmController.predict(algorithmId, yIn);
-	var inputImage = ImageController.generatBinaryImage(xIn, yIn);//TODO - implementar esta funcao na classe ImageController
-	var outputImage = ImageController.generatBinaryImage(xOut, yOut);//TODO - implementar esta funcao na classe ImageController 
 	
-	var output;
-	output.xOut = xOut;
-	output.yOut = yOut;
-    
-	DataModel.addDataModel(xIn, yIn, xOut, yOut, inputImage, outputImage, function(err, user){
+	//var inputImage = ImageController.generatBinaryImage(xIn, yIn);//TODO - implementar esta funcao na classe ImageController
+	//var outputImage = ImageController.generatBinaryImage(xOut, yOut);//TODO - implementar esta funcao na classe ImageController 
+	
+	DataModel.addDataModel(xIn, yIn, xOut, yOut, function(err, predict){
 		if (err) throw err;
-
-		res.json(inputdata);
+		res.json(predict._id);
 	});
-	res.json(output);
 });
 
 http.createServer(app).listen(app.get('port'), function(){

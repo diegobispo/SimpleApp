@@ -1,16 +1,24 @@
+// Exports
+module.exports.predict = predict;
 
 //TODO fazer a chamada python
 function predict(values, callback) 
 {
 	var length = values.length;
-	
 	var list = [];
 	
-	for (var i=0; i < values.length; i++)
+	for (var i=0; i < length; i++)
 	{
-		var randomnumber = Math.floor(Math.random()*length);
-		var plus = values[i] + randomnumber;
-		list.push(plus);
+		list.push(values[i]);
+	}
+		
+	for (var i=0; i < 20; i++)
+	{
+		var randomIndex = Math.floor(Math.random()* (length-1));
+		var randomNumber = Math.floor(Math.random()* (length-1));		
+		var value = values[randomIndex] + randomNumber;
+		
+		list.push(value);
 	}
 	
 	return  list;
