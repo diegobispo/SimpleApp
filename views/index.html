@@ -8,10 +8,45 @@
   <script src="javascripts/index.js"></script>
  </head>
  
- <body ng-app ng-controller="monControl">
-  <h3>Listagem dos Cantores</h3>
-  <div ng-repeat="a in artistas">
-   <p>{{a.id}}. {{a.nom}} {{a.prenom}}</p>
-  </div>
+ <body ng-app ng-controller="control">	
+	<div>
+		<form ng-submit="submit()" >
+			<span>Data:</span>
+			<select ng-model="imputData" ng-options="o.value as o.label for o in imputDataItens" bs-selectbox="Select Item"></select>
+			<span>Algorithm:</span>
+			<input type="text" ng-model="text" name="text" />
+			<input type="submit" id="submit" value="Submit" />
+		</form>
+	</div>
+	<div>
+		<div id="tab_in" float=left >
+			<table>
+				<caption>imput Data:</caption>
+				<tr>
+					<th>X</th>
+					<th>Y</th>
+				</tr>
+				<tr ng-repeat="a in imputPoints">		
+					<td>{{a.x}}</td>
+					<td>{{a.y}}</td>
+				</tr>
+			</table>
+		</div>
+		<div id="tab_out" float=rigth>
+			<table>
+				<caption>Output Data:</caption>
+				<tr>
+					<th>X</th>
+					<th>Y</th>
+				</tr>
+				
+				<tr ng-repeat="b in outputPoints">
+					<td>{{b.x}}</td>
+					<td>{{b.y}}</td>
+				</tr>		
+			</table>
+		</div>
+	</div>
  </body>
+ 
 </html>

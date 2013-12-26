@@ -48,33 +48,32 @@ app.get('/', function(req, res) {
 	});
 });
 
-app.get('/api', function(req, res){
-  
-	var ficheInfo = [
-		{ id:1, nom:"Paulinho", prenom:"Moska" },
-		{ id:2, nom:"Maria", prenom:"Gadú" },
-		{ id:3, nom:"Cássia", prenom:"Eller" }
-	];
-	console.log('ficheInfo: ' + ficheInfo);	
-	res.json(ficheInfo);
-});
-
-app.post('/predict', function(req, res){
-  
-	var algorithmId = req.body.algorithmId;
-	var xIn = req.body.x;
-	var yIn = req.body.y;	
+app.get('/predict/:imputPoints/algorithm/:algorithmId', function(req, res){
+	console.log('get(/predict/:imputPoints/algorithm/:algorithmId');
+	var algorithmId = req.params.algorithmId;
+	
+	//{"x":[1,2,3,4,5], "y":[4,5,6,7,8]};
+	
+	var xIn = req.params.imputPoints.x;
+	var yIn = req.params.imputPoints.y;
+	console.log('x: '+ xIn);
+	console.log('y: '+ yIn);
 	
 	var xOut = AlgorithmController.predict(algorithmId, xIn);//TODO - implementar esta funcao na classe AlgoritimController
 	var yOut = AlgorithmController.predict(algorithmId, yIn);
 	var inputImage = ImageController.generatBinaryImage(xIn, yIn);//TODO - implementar esta funcao na classe ImageController
 	var outputImage = ImageController.generatBinaryImage(xOut, yOut);//TODO - implementar esta funcao na classe ImageController 
+	
+	var output;
+	output.xOut = xOut;
+	output.yOut = yOut;
     
 	DataModel.addDataModel(xIn, yIn, xOut, yOut, inputImage, outputImage, function(err, user){
 		if (err) throw err;
 
-		res.redirect('/form');
+		res.json(inputdata);
 	});
+	res.json(output);
 });
 
 http.createServer(app).listen(app.get('port'), function(){
