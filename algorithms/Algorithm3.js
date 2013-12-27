@@ -4,6 +4,9 @@ module.exports.predict = predict;
 //TODO fazer a chamada python
 function predict(values, callback) 
 {
+	console.log("Algorithm 3: " + values);
+	console.log("Values: " + values);
+	
 	var length = values.length;
 	var list = [];
 	
@@ -20,6 +23,6 @@ function predict(values, callback)
 		
 		list.push(value);
 	}
-	
+	console.log("list: " + list);
 	return  list;
 }

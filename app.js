@@ -72,11 +72,15 @@ app.post('/predict/' , function(req, res){
 	var xIn = imputPoints.x;
 	var yIn = imputPoints.y;
 	
-	//console.log("**** xIn: " +xIn);
-	//console.log("**** yIn: " +yIn);
+	console.log("**** xIn: " +xIn);
+	console.log("**** yIn: " +yIn);
 	
 	var xOut = AlgorithmController.predict(algorithmId, xIn);
 	var yOut = AlgorithmController.predict(algorithmId, yIn);
+	
+	console.log("**** xOut: " +xOut);
+	console.log("**** yOut: " +yOut);
+
 	
 	//var inputImage = ImageController.generatBinaryImage(xIn, yIn);//TODO - implementar esta funcao na classe ImageController
 	//var outputImage = ImageController.generatBinaryImage(xOut, yOut);//TODO - implementar esta funcao na classe ImageController 

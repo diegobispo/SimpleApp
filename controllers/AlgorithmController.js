@@ -11,21 +11,29 @@ function predict(algorithmId, values, callback) {
 	var err;
 	var ret = 0;
 	
+	console.log("***** AlgorithmControler ******");
+	console.log("algorithmId " +algorithmId );
+	console.log("values " + values );
+	
 	// TODO - Validar dados de entrada do algoritimo.	
 	var isValidated = true; // valvalidate(values); 
 	if( isValidated )
 	{
 		switch (algorithmId) {
-			case "0":				
+			case 0:
+				console.log("case 0");
 				ret = algorithm1.predict(values);
 				break
-			case "1":
+			case 1:
+				console.log("case 1");
 				ret = algorithm2.predict(values);
 				break
-			case "2":
+			case 2:
+				console.log("case 2");
 				ret = algorithm3.predict(values);
 				break
 			default:
+				console.log("default");
 				err = "algorithm not found";
 		}	
 	}
